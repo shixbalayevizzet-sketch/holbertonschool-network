@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 # Configures localhost and facebook.com IP addresses
 
-sed -i 's/^127\.0\.0\.1[[:space:]]\+localhost/127.0.0.2\tlocalhost/' /etc/hosts
+awk '{
+    if ($1 == "127.0.0.1" && $2 == "localhost")
+        print "127.0.0.2\tlocalhost";
+    else
+        print;
+}' /etc/hosts > /tmp/hosts
+
+cat /tmp/hosts > /etc/hosts
 printf '8.8.8.8\tfacebook.com\n' >> /etc/hosts
